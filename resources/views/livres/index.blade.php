@@ -10,7 +10,7 @@
 
 <body>
     <h1>vous avez la liste des livres</h1>
-
+    <a href="{{ route('livres.create') }}">Ajouter un livre</a>
     <table>
         <thead>
             <tr>
@@ -18,6 +18,7 @@
                 <th>titre</th>
                 <th>auteur</th>
                 <th>prix</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -28,6 +29,14 @@
                     <td>{{$livre->titre}}</td>
                     <td>{{$livre->auteur}}</td>
                     <td>{{$livre->prix}}</td>
+                    <td>
+                        <a href="{{route('livres.edit', $livre)}}">Modifier</a>
+                        <form action="{{route('livres.destroy', $livre)}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
             @endforeach
 

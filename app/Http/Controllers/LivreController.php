@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 
 class LivreController extends Controller
 {
-    public function index(){
-        $livres= Livre::all();
+    public function index()
+    {
+        $livres = Livre::all();
         return view('livres.index', compact('livres'));
     }
 
-    public function create(){
+    public function create()
+    {
         return view('livres.create');
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'titre' => 'required',
             'auteur' => 'required',
@@ -24,6 +27,30 @@ class LivreController extends Controller
         ]);
 
         Livre::create($request->all());
+        return redirect()->route('livres.index');
+    }
+
+
+    public function edit($id)
+    {
+        $livre = Livre::find($id);
+        return view('livres.edit', compact('livre'));
+    }
+
+
+    public function update(Request $request, Livre $livre)
+    {
+        $request->validate([
+            'titre' => 'required',
+            'auteur' => 'required',
+            'prix' => 'required|numeric'
+        ]);
+        $livre->update($request->all());
+        return redirect()->route('livres.index');
+    }
+
+    public function destroy(Livre $livre){
+        $livre->delete();
         return redirect()->route('livres.index');
     }
 }
